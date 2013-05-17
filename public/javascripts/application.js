@@ -37,7 +37,7 @@ App.Models.Robot = Backbone.Model.extend({
   degrees:     ['0deg', '90deg',  '180deg',  '270deg'],
   orientation: ['N',    'E',      'S',       'W']
 });
-App.robot = new App.Models.robot();
+App.robot = new App.Models.Robot();
 
 
 // *********************************************************************************************************** VIEWS
