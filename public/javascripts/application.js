@@ -4,6 +4,29 @@
  *  https://github.com/stefanRitter/
  * 
  *
+ *  Classes:
+ *  ========
+ *
+ *  App: manages global namespace of this app
+ *
+ *
+ *
+ *  App.Models.Mars: Model of Mars, manages Mars' current size, triggers 'resize'
+ *
+ *  App.Models.Robot: Model of active robot, manages robot movement, 
+ *                    listens to Mars 'resize', queries Mars for its dimensions, triggers 'change'
+ *
+ *  App.Models.DeadRobots: Collection of dead robots, which where either lost or the connection severed, triggers 'add'
+ *
+ *
+ *
+ *  App.Views.Mars: View of planet Mars, listens to Mars 'resize', DeadRobots 'add', and Robot 'change'
+ *
+ *  App.Views.Input: View of input console, delegates commands to either Mars or Robot
+ *
+ *  App.Views.Output: View of robot output, listens to Robot 'change'
+ *
+ *  App.Views.HAL9000: HAL is an artificial intelligence that controls all systems
  */
 
 
@@ -53,16 +76,21 @@ App.mars = new App.Models.Mars();
 
 
 App.Models.Robot = Backbone.Model.extend({
-  degrees:     ['0deg', '90deg',  '180deg',  '270deg'],
-  orientation: ['N',    'E',      'S',       'W',     'LOST'],
+  degrees:     ['0deg', '90deg',  '180deg',  '270deg'],         // TODO: for css-translate
+  orientation: ['N',    'E',      'S',       'W',     'LOST'],  // for output
+  moveFunc: [function(that){that.y+=1;}, function(that){that.x+=1;}, function(that){that.y-=1;}, function(that){that.x-=1;}],
   currOrient: 0,
   x: 0,
   y: 0,
+  oldX: 0,
+  oldY: 0,
+  noGoCoords: [],
+  needsReset: false,
 
   initialize: function() {
     // declare this robot invalid if mars gets resized
     var that = this;
-    this.listenTo(App.mars, 'resize', function() { that.needsReset = true; } );
+    this.listenTo(App.mars, 'resize', function() { that.needsReset = true; noGoCoords = []; } );
   },
 
   makeNewRobot: function(x,y,orr) {
@@ -79,12 +107,60 @@ App.Models.Robot = Backbone.Model.extend({
   moveRobot: function(commands) {
     if (this.needsReset)  return false;
 
+    commands = commands.toUpperCase();
+    var commList = commands.split('');
+
+    for (var i = 0, len = commList.length; i < len; i++) {
+      switch (commList[i]){
+        case 'L':
+          this.currOrient-=1;
+          this.currOrient = (this.currOrient < 0) ? 3 : this.currOrient;
+          break;
+
+        case 'R':
+          this.currOrient+=1;
+          this.currOrient = (this.currOrient > 3) ? 0 : this.currOrient;
+          break;
+
+        case 'F':
+          this.oldX = this.x;
+          this.oldY = this.y;
+
+          // call the move function appropriate for the current orientation
+          this.moveFunc[this.currOrient](this);
+
+          // revert to old location if we know this is a dead end
+          if (! this.revert()) {
+
+            // check if robot is lost
+            if ( App.mars.offPlanet( this.x, this.y)) {
+              // this robot just died
+              this.noGoCoords.push({x: this.oldX, y: this.oldY, orr: this.currOrient});
+
+              this.needsReset = true;
+              this.x = this.oldX; this.y = this.oldY;
+              this.trigger('change');
+              return true;
+            }
+          }
+          break;
+
+        default:
+          return false;
+      }
+    }
+
     this.trigger('change');
     return true;
   },
 
+  revert: function() {
+    return false;
+  },
+
   getOutput: function() {
-    return this.x + ' ' + this.y + ' ' + this.orientation[this.currOrient];
+    var status = this.x + ' ' + this.y + ' ' + this.orientation[this.currOrient];
+    return (this.needsReset) ? (status + ' LOST') : status;
   }
 });
 App.robot = new App.Models.Robot();
@@ -178,6 +254,7 @@ App.Views.Input = Backbone.View.extend({
     // add command to command history
     var command = $('input[name=commands]').val();
     $('.commandHistory').prepend('<div>' + _.escape(command) + '</div>');
+    this.$("input:text").val('');
 
     // go through all the commands and run it if applicable
     for(var i = 0, len = this.commands.length; i < len; i++) {
