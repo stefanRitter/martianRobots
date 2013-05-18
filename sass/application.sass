@@ -44,11 +44,8 @@ $bigbreakpoint: 800px
   .commandHistory
     height: 80%
     width: 96%
-    padding: 2%
+    padding: 0 2%
     overflow: hidden
-
-  .command
-    display: block
 
   input
     display: block
@@ -61,17 +58,29 @@ $bigbreakpoint: 800px
 
   input[type=text]
     float: left
-    width: 80%
+    width: 96%
     padding-left: 2%
 
   input[type=submit]
-    float: right
+    height: 0
+    width: 0
+    padding: 0
+    margin: 0
 
 
 // ********************************************************************************** OUTPUT
 .output
   @extend %IOfields
   float: right
+
+  .outputTitle
+    margin: 4% 0 1.5% 2%
+
+  .outputHistory
+    padding: 2%
+    height: 96%
+    width: 96%
+    overflow: hidden
 
 // ********************************************************************************** HAL
 .hal

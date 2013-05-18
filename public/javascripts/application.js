@@ -31,18 +31,60 @@ var App = new (Backbone.View.extend({
 
 // *********************************************************************************************************** MODELS
 App.Models.Mars = Backbone.Model.extend({
-  // TODO: register mars' grid
+  x: 50,
+  y: 50,
+
+  resize: function(x,y) {
+    if ( x > 50 || y > 50 || x < 0 || y < 0) return false;
+
+    this.x = x;
+    this.y = y;
+    this.trigger('resize');
+
+    return true;
+  },
+
+  offPlanet: function(x,y) {
+    if (x > this.x || x < 0 || y > this.y || y < 0) return true;
+    return false;
+  }
 });
 App.mars = new App.Models.Mars();
 
 
 App.Models.Robot = Backbone.Model.extend({
   degrees:     ['0deg', '90deg',  '180deg',  '270deg'],
-  orientation: ['N',    'E',      'S',       'W'],
+  orientation: ['N',    'E',      'S',       'W',     'LOST'],
   currOrient: 0,
+  x: 0,
+  y: 0,
 
-  getOrientation: function() {
-    return this.degrees[this.currOrient];
+  initialize: function() {
+    // declare this robot invalid if mars gets resized
+    var that = this;
+    this.listenTo(App.mars, 'resize', function() { that.needsReset = true; } );
+  },
+
+  makeNewRobot: function(x,y,orr) {
+    if (App.mars.offPlanet(x,y)) return false;
+
+    this.x = x;
+    this.y = y;
+    this.currOrient = this.orientation.indexOf(orr);
+    this.needsReset = false;
+
+    return true;
+  },
+
+  moveRobot: function(commands) {
+    if (this.needsReset)  return false;
+
+    this.trigger('change');
+    return true;
+  },
+
+  getOutput: function() {
+    return this.x + ' ' + this.y + ' ' + this.orientation[this.currOrient];
   }
 });
 App.robot = new App.Models.Robot();
@@ -68,11 +110,11 @@ App.Views.Mars = Backbone.View.extend({
 App.Views.Input = Backbone.View.extend({
   className: 'input',
 
-  template: _.template( '<div class="commandHistory"></div>' +
-                        '<form>' +
+  template: _.template( '<form>' +
                           '<input type="text" name="commands" value="enter commands here" />' +
                           '<input type="submit" />' +
-                        '</form>'),
+                        '</form>' +
+                        '<div class="commandHistory"></div>'),
 
   events: { submit: "readInput"},
 
@@ -90,27 +132,41 @@ App.Views.Input = Backbone.View.extend({
   commands: [
               {
                 name: 'gridSize',
-                reg: /\d+\s\d+$/, // digits, space, digits, end of line
+                reg: /\d+ \d+$/, // digits, space, digits, end of line
                 run: function(command) {
-                  console.log(this.name);
-                  return;
+                  var grid = command.match(this.reg);
+                  grid = grid[0].split(' ');
+                  var x = parseInt(grid[0], 10),
+                      y = parseInt(grid[1], 10);
+
+                  if (! App.mars.resize(x, y) ) {
+                    // grid size was out of bounds
+                    $('audio')[0].play();
+                  }
                 }
               },
               {
                 name: 'newRobot',
                 reg: /\d+\s\d+\s[NESW]$/i, // digits, space, digits, space, N E S W n e s w
                 run: function(command) {
-                  console.log(this.name);
-                  return;
+                  var newRobot = command.match(this.reg);
+                  newRobot = newRobot[0].split(' ');
+                  var x = parseInt(newRobot[0], 10),
+                      y = parseInt(newRobot[1], 10),
+                      orr = newRobot[2];
+
+                  if (! App.robot.makeNewRobot(x,y,orr)) {
+                    $('audio')[0].play();
+                  }
                 }
               },
               {
                 name: 'moveRobot',
-                reg: /[lrf]+$/i, // any number of l r f or L R F
+                reg: /[lrf]+$/i, // any number of l r f L R F
                 run: function(command) {
-                  console.log(this.name);
-                  var list = command.match(this.reg)[0];
-                  return;
+                  if (! App.robot.moveRobot(command)) {
+                    $('audio')[0].play();
+                  }
                 }
               }
             ],
@@ -119,9 +175,9 @@ App.Views.Input = Backbone.View.extend({
     e.preventDefault();
     e.stopPropagation();
 
-    // add command to list of commands
+    // add command to command history
     var command = $('input[name=commands]').val();
-    $('.commandHistory').prepend('<span class="command">' + _.escape(command) + '</span>');
+    $('.commandHistory').prepend('<div>' + _.escape(command) + '</div>');
 
     // go through all the commands and run it if applicable
     for(var i = 0, len = this.commands.length; i < len; i++) {
@@ -141,11 +197,16 @@ App.Views.Output = Backbone.View.extend({
   className: 'output',
 
   initialize: function() {
-    // TODO: listen to robot changes
+    // listen to robot changes
+    this.listenTo(this.model, 'change', this.update);
+  },
+
+  update: function() {
+    $('.outputHistory').prepend('<div>' + this.model.getOutput() + '</div>');
   },
 
   render: function() {
-    // TODO: display robot position on change
+    this.$el.html('<div class="outputTitle">output:</div><div class="outputHistory"></div>');
     return this;
   }
 });
