@@ -43,7 +43,7 @@ html, body {
 
 /* line 10, ../../sass/application.sass */
 #app {
-  width: 90%;
+  width: 70%;
   height: 100%;
   margin: 0 auto;
 }
@@ -59,9 +59,12 @@ html, body {
   height: 40%;
   margin-top: 2%;
   background-color: black;
+  color: green;
+  font-family: Courier, monospace;
+  font-size: 0.8em;
 }
 
-/* line 27, ../../sass/application.sass */
+/* line 30, ../../sass/application.sass */
 .mars {
   float: left;
   width: 100%;
@@ -70,43 +73,59 @@ html, body {
   background: url("../images/noise.jpg");
 }
 
-/* line 37, ../../sass/application.sass */
+/* line 40, ../../sass/application.sass */
 .input {
   float: left;
 }
-/* line 41, ../../sass/application.sass */
-.input input[type=text] {
-  color: green;
-  border: 0;
-  background-color: black;
+/* line 44, ../../sass/application.sass */
+.input .commandHistory {
+  height: 80%;
   width: 96%;
   padding: 2%;
+  overflow: hidden;
 }
-/* line 48, ../../sass/application.sass */
-.input input[type=submit] {
-  background-color: black;
-  border: 0;
+/* line 50, ../../sass/application.sass */
+.input .command {
+  display: block;
+}
+/* line 53, ../../sass/application.sass */
+.input input {
+  display: block;
+  height: 18%;
+  margin: 4% 0;
   color: green;
-  padding: 2%;
+  border: 0;
+  background-color: black;
+  font-family: Courier, monospace;
+}
+/* line 62, ../../sass/application.sass */
+.input input[type=text] {
+  float: left;
+  width: 80%;
+  padding-left: 2%;
+}
+/* line 67, ../../sass/application.sass */
+.input input[type=submit] {
+  float: right;
 }
 
-/* line 56, ../../sass/application.sass */
+/* line 72, ../../sass/application.sass */
 .output {
   float: right;
 }
 
-/* line 61, ../../sass/application.sass */
+/* line 77, ../../sass/application.sass */
 .hal {
   float: left;
   width: 15%;
   margin: 4.5% 2.5%;
 }
-/* line 65, ../../sass/application.sass */
+/* line 81, ../../sass/application.sass */
 .hal img {
   display: block;
   width: 100%;
 }
-/* line 68, ../../sass/application.sass */
+/* line 84, ../../sass/application.sass */
 .hal audio {
   height: 0;
 }

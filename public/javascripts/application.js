@@ -68,7 +68,8 @@ App.Views.Mars = Backbone.View.extend({
 App.Views.Input = Backbone.View.extend({
   className: 'input',
 
-  template: _.template( '<form>' +
+  template: _.template( '<div class="commandHistory"></div>' +
+                        '<form>' +
                           '<input type="text" name="commands" value="enter commands here" />' +
                           '<input type="submit" />' +
                         '</form>'),
@@ -77,16 +78,60 @@ App.Views.Input = Backbone.View.extend({
 
   render: function() {
     this.$el.html( this.template( this.model.attributes ));
+
+    // automatically select content when activated
+    this.$("input:text")
+        .focus(function () { $(this).select(); } )
+        .mouseup(function (e) {e.preventDefault(); });
+
     return this;
   },
+
+  commands: [
+              {
+                name: 'gridSize',
+                reg: /\d+\s\d+$/, // digits, space, digits, end of line
+                run: function(command) {
+                  console.log(this.name);
+                  return;
+                }
+              },
+              {
+                name: 'newRobot',
+                reg: /\d+\s\d+\s[NESW]$/i, // digits, space, digits, space, N E S W n e s w
+                run: function(command) {
+                  console.log(this.name);
+                  return;
+                }
+              },
+              {
+                name: 'moveRobot',
+                reg: /[lrf]+$/i, // any number of l r f or L R F
+                run: function(command) {
+                  console.log(this.name);
+                  var list = command.match(this.reg)[0];
+                  return;
+                }
+              }
+            ],
 
   readInput: function(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    // TODO: handle input
+    // add command to list of commands
     var command = $('input[name=commands]').val();
+    $('.commandHistory').prepend('<span class="command">' + _.escape(command) + '</span>');
 
+    // go through all the commands and run it if applicable
+    for(var i = 0, len = this.commands.length; i < len; i++) {
+      if( this.commands[i].reg.test(command) ) {
+        this.commands[i].run(command);
+        return;
+      }
+    }
+
+    // no command matched
     $('audio')[0].play();
   }
 });
