@@ -162,7 +162,6 @@ App.Models.Robot = Backbone.Model.extend({
       // check if a robot has been lost here before
       if (oldX === noGos[i].x && oldX === noGos[i].y && orr === noGos[i].orr) {
         this.x = oldX; this.y = oldY;
-        alert('no go');
         return true;
       }
     }
@@ -226,8 +225,7 @@ App.Views.Input = Backbone.View.extend({
                       y = parseInt(grid[1], 10);
 
                   if (! App.mars.resize(x, y) ) {
-                    // grid size was out of bounds
-                    $('audio')[0].play();
+                    HAL9000.error('grid size was out of bounds');
                   }
                 }
               },
@@ -242,7 +240,7 @@ App.Views.Input = Backbone.View.extend({
                       orr = newRobot[2];
 
                   if (! App.robot.makeNewRobot(x,y,orr)) {
-                    $('audio')[0].play();
+                    HAL9000.error('your robot missed the planet');
                   }
                 }
               },
@@ -251,7 +249,7 @@ App.Views.Input = Backbone.View.extend({
                 reg: /[lrf]+$/i, // any number of l r f L R F
                 run: function(command) {
                   if (! App.robot.moveRobot(command)) {
-                    $('audio')[0].play();
+                    HAL9000.error('no new robot');
                   }
                 }
               }
@@ -264,23 +262,30 @@ App.Views.Input = Backbone.View.extend({
     var input = $('textarea').val(),
         inputs = input.split('\n');
 
-    for (var j = 0, l = inputs.length; j < l; j++) {
+    try {
+      for (var j = 0, l = inputs.length; j < l; j++) {
 
-      var command = inputs[j];
-      if (! command) continue; // skip the empty string
-      alert(command + ' ' +l);
+        var command = inputs[j],
+            processed = false;
 
-      // go through all the commands and run it if applicable
-      for(var i = 0, len = this.commands.length; i < len; i++) {
-        if( this.commands[i].reg.test(command) ) {
-          this.commands[i].run(command);
-          break;
+        if (! command) continue; // skip the empty string
+
+        // go through all the commands and run it if applicable
+        for(var i = 0, len = this.commands.length; i < len; i++) {
+          if( this.commands[i].reg.test(command) ) {
+            this.commands[i].run(command);
+            processed = true;
+            break;
+          }
+        }
+
+        if (! processed) {
+          HAL9000.error('no matching command');
         }
       }
+    } catch (err) {
+      console.log(err);
     }
-
-    // no command matched
-    // $('audio')[0].play();
   }
 });
 
@@ -318,11 +323,11 @@ App.Views.HAL9000 = Backbone.View.extend({
 
   error: function(message) {
     $('audio')[0].play();
-    message = message || 'HAL: an error occured';
-    throw message;
+    message = message || 'an error occured';
+    throw 'HAL: ' + message;
   }
 });
-
+window.HAL9000 = new App.Views.HAL9000();
 
 // *********************************************************************************************************** ROUTER
 App.router = new (Backbone.Router.extend({
@@ -334,11 +339,10 @@ App.router = new (Backbone.Router.extend({
     var mars = new App.Views.Mars({ model: App.mars }),
         input = new App.Views.Input({ model: App.robot }),
         output = new App.Views.Output({ model: App.robot }),
-        hal = new App.Views.HAL9000({});
         $app = $('#app');
 
     $app.append(input.render().el);
-    $app.append(hal.render().el);
+    $app.append(HAL9000.render().el);
     $app.append(output.render().el);
     $app.append(mars.render().el);
   }

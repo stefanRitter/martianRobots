@@ -84,13 +84,6 @@ html, body {
   float: left;
 }
 /* line 47, ../../sass/application.sass */
-.input .commandHistory {
-  height: 40%;
-  width: 96%;
-  padding: 0 2%;
-  overflow: hidden;
-}
-/* line 53, ../../sass/application.sass */
 .input textarea {
   display: block;
   resize: none;
@@ -104,7 +97,7 @@ html, body {
   font-family: Courier, monospace;
   font-size: 1em;
 }
-/* line 66, ../../sass/application.sass */
+/* line 60, ../../sass/application.sass */
 .input input[type=submit] {
   display: block;
   height: 18%;
@@ -117,15 +110,15 @@ html, body {
   font-size: 1em;
 }
 
-/* line 79, ../../sass/application.sass */
+/* line 73, ../../sass/application.sass */
 .output {
   float: right;
 }
-/* line 83, ../../sass/application.sass */
+/* line 77, ../../sass/application.sass */
 .output .outputTitle {
   margin: 2% 0 1.5% 2%;
 }
-/* line 86, ../../sass/application.sass */
+/* line 80, ../../sass/application.sass */
 .output .outputHistory {
   padding: 2%;
   height: 96%;
@@ -133,18 +126,18 @@ html, body {
   overflow: hidden;
 }
 
-/* line 94, ../../sass/application.sass */
+/* line 88, ../../sass/application.sass */
 .hal {
   float: left;
   width: 15%;
   margin: 4.5% 2.5%;
 }
-/* line 98, ../../sass/application.sass */
+/* line 92, ../../sass/application.sass */
 .hal img {
   display: block;
   width: 100%;
 }
-/* line 101, ../../sass/application.sass */
+/* line 95, ../../sass/application.sass */
 .hal audio {
   height: 0;
 }
