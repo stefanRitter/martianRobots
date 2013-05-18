@@ -27,6 +27,7 @@
  *  App.Views.Output: View of robot output, listens to Robot 'change'
  *
  *  App.Views.HAL9000: HAL is an artificial intelligence that controls all systems
+ *
  */
 
 
@@ -76,8 +77,8 @@ App.mars = new App.Models.Mars();
 
 
 App.Models.Robot = Backbone.Model.extend({
-  degrees:     ['0deg', '90deg',  '180deg',  '270deg'],         // TODO: for css-translate
-  orientation: ['N',    'E',      'S',       'W',     'LOST'],  // for output
+  degrees:     ['0deg', '90deg',  '180deg',  '270deg'],   // TODO: for css-translate
+  orientation: ['N',    'E',      'S',       'W'],        // for output
   moveFunc: [function(that){that.y+=1;}, function(that){that.x+=1;}, function(that){that.y-=1;}, function(that){that.x-=1;}],
   currOrient: 0,
   x: 0,
@@ -184,7 +185,7 @@ App.Models.DeadRobots = Backbone.Collection.extend({
 
 // *********************************************************************************************************** VIEWS
 App.Views.Mars = Backbone.View.extend({
-  className: 'mars',
+  //className: 'mars',
 
   render: function() {
     // TODO: render mars, robot, and dead robots
@@ -197,10 +198,9 @@ App.Views.Input = Backbone.View.extend({
   className: 'input',
 
   template: _.template( '<form>' +
-                          '<input type="text" name="commands" value="enter commands here" />' +
-                          '<input type="submit" />' +
-                        '</form>' +
-                        '<div class="commandHistory"></div>'),
+                          '<textarea name="description">enter commands here</textarea>' +
+                          '<input type="submit" value="launch mission" />' +
+                        '</form>'),
 
   events: { submit: "readInput"},
 
@@ -208,7 +208,7 @@ App.Views.Input = Backbone.View.extend({
     this.$el.html( this.template( this.model.attributes ));
 
     // automatically select content when activated
-    this.$("input:text")
+    this.$("textarea")
         .focus(function () { $(this).select(); } )
         .mouseup(function (e) {e.preventDefault(); });
 
@@ -261,21 +261,26 @@ App.Views.Input = Backbone.View.extend({
     e.preventDefault();
     e.stopPropagation();
 
-    // add command to command history
-    var command = $('input[name=commands]').val();
-    $('.commandHistory').prepend('<div>' + _.escape(command) + '</div>');
-    this.$("input:text").val('');
+    var input = $('textarea').val(),
+        inputs = input.split('\n');
 
-    // go through all the commands and run it if applicable
-    for(var i = 0, len = this.commands.length; i < len; i++) {
-      if( this.commands[i].reg.test(command) ) {
-        this.commands[i].run(command);
-        return;
+    for (var j = 0, l = inputs.length; j < l; j++) {
+
+      var command = inputs[j];
+      if (! command) continue; // skip the empty string
+      alert(command + ' ' +l);
+
+      // go through all the commands and run it if applicable
+      for(var i = 0, len = this.commands.length; i < len; i++) {
+        if( this.commands[i].reg.test(command) ) {
+          this.commands[i].run(command);
+          break;
+        }
       }
     }
 
     // no command matched
-    $('audio')[0].play();
+    // $('audio')[0].play();
   }
 });
 
@@ -309,6 +314,12 @@ App.Views.HAL9000 = Backbone.View.extend({
                       '<source src="../sounds/cantdo.mp3" type="audio/mpeg">' +
                    '</audio>' );
     return this;
+  },
+
+  error: function(message) {
+    $('audio')[0].play();
+    message = message || 'HAL: an error occured';
+    throw message;
   }
 });
 
@@ -326,10 +337,10 @@ App.router = new (Backbone.Router.extend({
         hal = new App.Views.HAL9000({});
         $app = $('#app');
 
-    $app.append(mars.render().el);
     $app.append(input.render().el);
     $app.append(hal.render().el);
     $app.append(output.render().el);
+    $app.append(mars.render().el);
   }
 }))();
 
