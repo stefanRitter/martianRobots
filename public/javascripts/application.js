@@ -155,6 +155,16 @@ App.Models.Robot = Backbone.Model.extend({
   },
 
   revert: function() {
+    var oldX = this.oldX, oldY = this.oldY, orr = this.currOrient, noGos = this.noGoCoords;
+
+    for(var i = 0, len = noGos.length; i < len; i++) {
+      // check if a robot has been lost here before
+      if (oldX === noGos[i].x && oldX === noGos[i].y && orr === noGos[i].orr) {
+        this.x = oldX; this.y = oldY;
+        alert('no go');
+        return true;
+      }
+    }
     return false;
   },
 
