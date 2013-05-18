@@ -68,7 +68,7 @@ App.Views.Mars = Backbone.View.extend({
 App.Views.Input = Backbone.View.extend({
   className: 'input',
 
-  template: _.template( '<form class="newProjectForm">' +
+  template: _.template( '<form>' +
                           '<input type="text" name="commands" value="enter commands here" />' +
                           '<input type="submit" />' +
                         '</form>'),
@@ -80,8 +80,14 @@ App.Views.Input = Backbone.View.extend({
     return this;
   },
 
-  readInput: function() {
+  readInput: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
     // TODO: handle input
+    var command = $('input[name=commands]').val();
+
+    $('audio')[0].play();
   }
 });
 
@@ -100,6 +106,20 @@ App.Views.Output = Backbone.View.extend({
 });
 
 
+App.Views.HAL9000 = Backbone.View.extend({
+  className: 'hal',
+
+  render: function() {
+    this.$el.html( '<img src="../images/hal.png" />' +
+                   '<audio>' +
+                      '<source src="../sounds/cantdo.ogg" type="audio/ogg">' +
+                      '<source src="../sounds/cantdo.mp3" type="audio/mpeg">' +
+                   '</audio>' );
+    return this;
+  }
+});
+
+
 // *********************************************************************************************************** ROUTER
 App.router = new (Backbone.Router.extend({
   routes: {
@@ -110,10 +130,12 @@ App.router = new (Backbone.Router.extend({
     var mars = new App.Views.Mars({ model: App.mars }),
         input = new App.Views.Input({ model: App.robot }),
         output = new App.Views.Output({ model: App.robot }),
+        hal = new App.Views.HAL9000({});
         $app = $('#app');
 
     $app.append(mars.render().el);
     $app.append(input.render().el);
+    $app.append(hal.render().el);
     $app.append(output.render().el);
   }
 }))();
