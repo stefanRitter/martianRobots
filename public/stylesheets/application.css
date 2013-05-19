@@ -41,22 +41,17 @@ html, body {
   clear: both;
 }
 
-/* line 10, ../../sass/application.sass */
+/* line 6, ../../sass/application.sass */
 #app {
   width: 70%;
   height: 100%;
   margin: 0 auto;
 }
 
-/* line 15, ../../sass/application.sass */
-.input, .output, .mars {
-  border: 0;
-}
-
-/* line 18, ../../sass/application.sass */
+/* line 11, ../../sass/application.sass */
 .input, .output {
   width: 40%;
-  height: 40%;
+  height: 21.3em;
   margin-top: 2%;
   background-color: black;
   color: green;
@@ -64,7 +59,7 @@ html, body {
   font-size: 0.8em;
 }
 
-/* line 30, ../../sass/application.sass */
+/* line 22, ../../sass/application.sass */
 .mars {
   position: fixed;
   top: 0;
@@ -79,11 +74,11 @@ html, body {
   z-index: -1;
 }
 
-/* line 43, ../../sass/application.sass */
+/* line 34, ../../sass/application.sass */
 .input {
   float: left;
 }
-/* line 47, ../../sass/application.sass */
+/* line 38, ../../sass/application.sass */
 .input textarea {
   display: block;
   resize: none;
@@ -97,7 +92,11 @@ html, body {
   font-family: Courier, monospace;
   font-size: 1em;
 }
-/* line 60, ../../sass/application.sass */
+/* line 51, ../../sass/application.sass */
+.input textarea:focus {
+  outline-color: green;
+}
+/* line 54, ../../sass/application.sass */
 .input input[type=submit] {
   display: block;
   height: 18%;
@@ -109,28 +108,34 @@ html, body {
   font-family: Courier, monospace;
   font-size: 1em;
 }
+/* line 65, ../../sass/application.sass */
+.input input[type=submit]:hover {
+  color: red;
+}
 
-/* line 73, ../../sass/application.sass */
+/* line 70, ../../sass/application.sass */
 .output {
   float: right;
 }
-/* line 77, ../../sass/application.sass */
+/* line 74, ../../sass/application.sass */
 .output .outputTitle {
   margin: 2% 0 1.5% 2%;
 }
-/* line 80, ../../sass/application.sass */
+/* line 77, ../../sass/application.sass */
 .output .outputHistory {
   padding: 2%;
-  height: 96%;
+  height: 17em;
   width: 96%;
   overflow: hidden;
 }
 
-/* line 88, ../../sass/application.sass */
+/* line 85, ../../sass/application.sass */
 .hal {
   float: left;
   width: 15%;
   margin: 4.5% 2.5%;
+  font-family: Courier, monospace;
+  font-size: 1em;
 }
 /* line 92, ../../sass/application.sass */
 .hal img {
@@ -140,4 +145,14 @@ html, body {
 /* line 95, ../../sass/application.sass */
 .hal audio {
   height: 0;
+}
+/* line 97, ../../sass/application.sass */
+.hal div {
+  text-align: center;
+  width: 100%;
+  margin-top: 3%;
+}
+/* line 101, ../../sass/application.sass */
+.hal .error {
+  color: red;
 }
