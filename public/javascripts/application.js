@@ -29,6 +29,7 @@
  *  App.Views.HAL9000: HAL is an artificial intelligence that controls all systems, and throws exception
  *
  */
+(function() {
 
 
 // *********************************************************************************************************** APP
@@ -368,3 +369,6 @@ App.router = new (Backbone.Router.extend({
 $(function() {
   App.start();
 });
+
+
+}).call(this);
