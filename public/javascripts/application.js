@@ -208,10 +208,7 @@ App.Views.Mars = Backbone.View.extend({
 App.Views.Input = Backbone.View.extend({
   className: 'input',
 
-  template: _.template( '<form>' +
-                          '<textarea name="description">enter commands here</textarea>' +
-                          '<input type="submit" value="launch mission" />' +
-                        '</form>'),
+  template: _.template($('#InputView').html()),
 
   events: { submit: "readInput"},
 
@@ -322,13 +319,7 @@ App.Views.HAL9000 = Backbone.View.extend({
   className: 'hal',
 
   render: function() {
-    this.$el.html( '<img src="../images/hal.png" />' +
-                   '<div class="title">HAL9000</div>' +
-                   '<div class="error"></div>' +
-                   '<audio>' +
-                      '<source src="../sounds/cantdo.ogg" type="audio/ogg">' +
-                      '<source src="../sounds/cantdo.mp3" type="audio/mpeg">' +
-                   '</audio>' );
+    this.$el.html( $('#HALView').html() );
     return this;
   },
 
@@ -344,6 +335,7 @@ App.Views.HAL9000 = Backbone.View.extend({
   }
 });
 window.HAL9000 = new App.Views.HAL9000();
+
 
 // *********************************************************************************************************** ROUTER
 App.router = new (Backbone.Router.extend({

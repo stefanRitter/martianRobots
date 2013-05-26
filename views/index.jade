@@ -23,6 +23,21 @@ html(lang="en")
   body
     div#app
 
+    script#InputView(type='text/template')
+      form
+        textarea(name='description')
+          | enter commands here
+        input(type='submit',value='launch mission')
+
+    script#HALView(type='text/template')
+      img(src="../images/hal.png")
+      div.title
+        | HAL9000
+      div.error
+      audio
+        source(src="../sounds/cantdo.ogg",type="audio/ogg")
+        source(src="../sounds/cantdo.mp3",type="audio/mpeg")
+
     script(src='../javascripts/jquery-1.9.1.min.js')
     script(src='../javascripts/underscore-min.js')
     script(src='../javascripts/backbone-min.js')
