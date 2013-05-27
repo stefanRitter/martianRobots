@@ -33,7 +33,7 @@
 
 
 // *********************************************************************************************************** APP
-var App = new (Backbone.View.extend({
+window.App = new (Backbone.View.extend({
 
   // class definitions
   Models: {},

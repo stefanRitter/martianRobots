@@ -20,16 +20,19 @@ html, body {
  * http://sasstwo.codeschool.com/
  **************************************************************** */
 /* line 32, ../../sass/_base.sass */
+#app,
 .clearfix {
   zoom: 1;
 }
 /* line 35, ../../sass/_base.sass */
+#app:before, #app:after,
 .clearfix:before,
 .clearfix:after {
   content: "";
   display: table;
 }
 /* line 39, ../../sass/_base.sass */
+#app:after,
 .clearfix:after {
   clear: both;
 }
@@ -44,11 +47,12 @@ html, body {
 /* line 6, ../../sass/application.sass */
 #app {
   width: 70%;
-  height: 100%;
+  height: auto;
   margin: 0 auto;
+  padding-bottom: 3em;
 }
 
-/* line 11, ../../sass/application.sass */
+/* line 14, ../../sass/application.sass */
 .input, .output {
   width: 40%;
   height: 21.3em;
@@ -59,7 +63,7 @@ html, body {
   font-size: 0.8em;
 }
 
-/* line 22, ../../sass/application.sass */
+/* line 25, ../../sass/application.sass */
 .mars {
   position: fixed;
   top: 0;
@@ -74,11 +78,11 @@ html, body {
   z-index: -1;
 }
 
-/* line 34, ../../sass/application.sass */
+/* line 37, ../../sass/application.sass */
 .input {
   float: left;
 }
-/* line 38, ../../sass/application.sass */
+/* line 41, ../../sass/application.sass */
 .input textarea {
   display: block;
   resize: none;
@@ -92,11 +96,11 @@ html, body {
   font-family: Courier, monospace;
   font-size: 1em;
 }
-/* line 51, ../../sass/application.sass */
+/* line 54, ../../sass/application.sass */
 .input textarea:focus {
   outline-color: green;
 }
-/* line 54, ../../sass/application.sass */
+/* line 57, ../../sass/application.sass */
 .input input[type=submit] {
   display: block;
   height: 18%;
@@ -108,20 +112,20 @@ html, body {
   font-family: Courier, monospace;
   font-size: 1em;
 }
-/* line 65, ../../sass/application.sass */
+/* line 68, ../../sass/application.sass */
 .input input[type=submit]:hover {
   color: red;
 }
 
-/* line 70, ../../sass/application.sass */
+/* line 73, ../../sass/application.sass */
 .output {
   float: right;
 }
-/* line 74, ../../sass/application.sass */
+/* line 77, ../../sass/application.sass */
 .output .outputTitle {
   margin: 2% 0 1.5% 2%;
 }
-/* line 77, ../../sass/application.sass */
+/* line 80, ../../sass/application.sass */
 .output .outputHistory {
   padding: 2%;
   height: 17em;
@@ -129,7 +133,7 @@ html, body {
   overflow: hidden;
 }
 
-/* line 85, ../../sass/application.sass */
+/* line 88, ../../sass/application.sass */
 .hal {
   float: left;
   width: 15%;
@@ -137,22 +141,22 @@ html, body {
   font-family: Courier, monospace;
   font-size: 1em;
 }
-/* line 92, ../../sass/application.sass */
+/* line 95, ../../sass/application.sass */
 .hal img {
   display: block;
   width: 100%;
 }
-/* line 95, ../../sass/application.sass */
+/* line 98, ../../sass/application.sass */
 .hal audio {
   height: 0;
 }
-/* line 97, ../../sass/application.sass */
+/* line 100, ../../sass/application.sass */
 .hal div {
   text-align: center;
   width: 100%;
   margin-top: 3%;
 }
-/* line 101, ../../sass/application.sass */
+/* line 104, ../../sass/application.sass */
 .hal .error {
   color: red;
 }
