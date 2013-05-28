@@ -12,8 +12,17 @@
 (function($) {
 
   // helpers
-  function printOutput(message) {
-    $('.outputHistory').append('<div>' + message + '</div>');
+  function printOutput(message, error) {
+    var div = '';
+    error = error || false;
+
+    if (error) {
+      div = '<div class="error">ERROR: ' + message + '</div>';
+    } else {
+      div = '<div>' + message + '</div>';
+    }
+
+    $('.outputHistory').append(div);
   }
 
   function updateStatus(status) {
@@ -57,5 +66,8 @@
     printOutput(data.message);
   });
 
+  server.on('error', function (data) {
+    printOutput(data.message, true);
+  });
 
 })(jQuery);

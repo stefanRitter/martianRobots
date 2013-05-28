@@ -33,5 +33,5 @@ var server = app.listen(port, function() {
   console.log("Listening on " + port);
 });
 
-// set up socketIO
-require('./socket-io')(app, server);
+// set up the socketIO version of the app
+require('./socketIO/socket-io')(app, server);

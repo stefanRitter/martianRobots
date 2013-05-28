@@ -133,8 +133,12 @@ html, body {
   width: 96%;
   overflow: hidden;
 }
+/* line 87, ../../sass/application.sass */
+.output .error {
+  color: red;
+}
 
-/* line 89, ../../sass/application.sass */
+/* line 92, ../../sass/application.sass */
 .hal {
   float: left;
   width: 15%;
@@ -142,22 +146,22 @@ html, body {
   font-family: Courier, monospace;
   font-size: 1em;
 }
-/* line 96, ../../sass/application.sass */
+/* line 99, ../../sass/application.sass */
 .hal img {
   display: block;
   width: 100%;
 }
-/* line 99, ../../sass/application.sass */
+/* line 102, ../../sass/application.sass */
 .hal audio {
   height: 0;
 }
-/* line 101, ../../sass/application.sass */
+/* line 104, ../../sass/application.sass */
 .hal div {
   text-align: center;
   width: 100%;
   margin-top: 3%;
 }
-/* line 105, ../../sass/application.sass */
+/* line 108, ../../sass/application.sass */
 .hal .error {
   color: red;
 }
