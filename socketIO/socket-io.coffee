@@ -29,7 +29,6 @@ module.exports = (app, server) ->
       console.log "parsing commands: #{data}"
 
       inputs = data.split('\n')
-      output = ''
 
       # command logic
       try
@@ -43,6 +42,7 @@ module.exports = (app, server) ->
           for command in commands
             if command.reg.test(input)
               output = command.run(input)
+              client.emit('output', message: output) if output
               processed = true
               break
 
@@ -53,5 +53,3 @@ module.exports = (app, server) ->
         console.log "ERROR: #{error}"
         client.emit('error', { message: error });
         return
-
-      client.emit('output', { message: output });
