@@ -5,10 +5,16 @@
   Classes:
   ========
 
-  Mars
+  Mars:
+    resize(x,y)
+    offPlanet(x,y): true when coords are off planet
 
   Robot
+    move(commands): returns final robot position
+    make(x,y,orr): makes a new robot
+    revert(): checks if this robot is trying to go off planet
 ###
+
 
 
 class Mars
@@ -21,6 +27,7 @@ class Mars
 
     @x = x
     @y = y
+    robot.needsReset = true
     return
 
   offPlanet: (x,y) ->
@@ -35,17 +42,85 @@ class Mars
 mars = new Mars()
 
 
+
 class Robot
-  constructor: ->
-    return
+  constructor: (@x = 0, @y = 0)->
+    @orientation = ['N', 'E', 'S', 'W']
+    @moveFunc = [
+      (that)->
+        that.y+=1
+      , (that)->
+        that.x+=1
+      , (that)->
+        that.y-=1
+      , (that)->
+        that.x-=1
+      ]
+    @oldX = 0
+    @oldY = 0
+    @noGoCoords = []
+    @currOrient = 0
+    @needsReset = true
 
   make: (x,y,orr)->
-    return "Robot created at x:#{x} y:#{y} orr:#{orr}"
+    if mars.offPlanet(x,y)
+      throw 'your robot missed the planet'
+
+    @x = x
+    @y = y
+    @currOrient = @orientation.indexOf(orr)
+    @needsReset = false
+    return
+
+  revert: ()->
+    for noGo in @noGoCoords
+      # check if a robot has been lost here before
+      if @oldX is noGo.x and @oldY is noGo.y and @currOrient is noGo.orr
+        @x = @oldX
+        @y = @oldY
+        return true
+    return false
 
   move: (commands)->
-    return "Robot moved according to #{commands}"
+    if @needsReset
+      throw 'no new robot'
+
+    commands = commands.toUpperCase()
+    commList = commands.split('')
+
+    for command in commList
+      switch command
+        when 'L'
+          @currOrient-= 1
+          @currOrient = 3 if @currOrient < 0
+
+        when 'R'
+          @currOrient+= 1
+          @currOrient = 0 if @currOrient > 3
+
+        when 'F'
+          @oldX = @x
+          @oldY = @y
+
+          # call the move function appropriate for the current orientation
+          @moveFunc[@currOrient](@)
+
+          # revert to old location if we know this is a dead end
+          unless @.revert()
+            # check if robot is lost
+            if mars.offPlanet(@x, @y)
+              # this robot just died
+              @noGoCoords.push { x: @oldX, y: @oldY, orr: @currOrient }
+              @needsReset = true
+              return "#{@oldX} #{@oldY} #{@orientation[@currOrient]} LOST"
+
+        else
+          throw 'unrecognised command in Robot.move'
+
+    return "#{@x} #{@y} #{@orientation[@currOrient]}"
 
 robot = new Robot()
+
 
 
 module.exports = [

@@ -21,10 +21,10 @@ F           move one field forward
 Links
 -----
 
-main site: http://sr-martian-robot.herokuapp.com/
+Main site: http://sr-martian-robot.herokuapp.com/
 
 
-jasmine.js unit tests: http://sr-martian-robot.herokuapp.com/test
+Jasmine.js unit tests: http://sr-martian-robot.herokuapp.com/test
 
 
-mars lander using socketIO: http://sr-martian-robot.herokuapp.com/socketio
+Mars lander using socketIO: http://sr-martian-robot.herokuapp.com/socketio
