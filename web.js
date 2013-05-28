@@ -1,7 +1,9 @@
 // a simple node server using express
 
-var express = require("express");
-var app = express();
+require('coffee-script');
+
+var express = require("express"),
+    app = express();
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
@@ -9,9 +11,15 @@ app.set('view engine', 'jade');
 app.use(express.logger());
 app.use(express.static(__dirname + '/public'));
 
+
 app.get('/test', function(req, res) {
   // serve jasmine test page
   res.render('test');
+});
+
+app.get('/socketio', function(req, res) {
+  // serve socketIO version
+  res.render('socketio');
 });
 
 app.get('/*?', function(req, res) {
@@ -19,7 +27,11 @@ app.get('/*?', function(req, res) {
   res.render('index');
 });
 
+
 var port = process.env.PORT || 5000;
-app.listen(port, function() {
+var server = app.listen(port, function() {
   console.log("Listening on " + port);
 });
+
+// set up socketIO
+require('./socket-io')(app, server);
