@@ -14,6 +14,11 @@ module.exports = (app, server) ->
   unless app.settings.socketIO
     app.set 'socketIO', io
 
+  # heroku settings
+  io.configure () ->
+    io.set "transports", ["xhr-polling"]
+    io.set "polling duration", 10
+
 
   # log all new connections
   io.sockets.on 'connection', (client) ->
