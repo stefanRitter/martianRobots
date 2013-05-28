@@ -1,6 +1,7 @@
 ###
-  Setup socketIO and listen to mars lander's instructions
+  Set-up socketIO and listen to Mars lander's instructions
 ###
+
 
 module.exports = (app, server) ->
 

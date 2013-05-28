@@ -9,13 +9,27 @@
  */
 
 
-(function() {
+(function($) {
 
+  // connect to server
   var server = io.connect('http://localhost:5000');
 
   server.on('connect', function(data) {
+    $('#status').text('status: connected');
     nickname = 'Mars Lander';
     server.emit('join', nickname);
   });
 
-}).call(this);
+
+  // automatically select content when activated
+  $("textarea")
+      .focus(function () { $(this).select(); } )
+      .mouseup(function (e) {e.preventDefault(); });
+
+  $('form').on('submit', function(e) {
+    e.preventDefault();
+
+    // TODO
+  });
+
+})(jQuery);

@@ -11,7 +11,7 @@ html(lang="en")
       | *
       | *
 
-    title Martian Robot
+    title Martian Robot - Socket.IO
 
     meta(name='description',content='Martian Robot Challenge')
     meta(name='author',content='Stefan Ritter')
@@ -22,6 +22,20 @@ html(lang="en")
 
   body
     div#app
+      div.input
+        form
+          textarea(name='description')
+            | enter commands here
+          input(type='submit',value='execute')
+
+      div.hal
+        div#status
+          | status: connecting...
+
+      div.output
+        div.outputTitle
+          | output:
+        div.outputHistory
 
     script(src='../javascripts/jquery-1.9.1.min.js')
     script(src='/socket.io/socket.io.js')

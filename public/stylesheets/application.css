@@ -104,6 +104,7 @@ html, body {
 .input input[type=submit] {
   display: block;
   height: 18%;
+  width: 96%;
   margin: 2%;
   padding: 0.5em;
   color: green;
@@ -112,20 +113,20 @@ html, body {
   font-family: Courier, monospace;
   font-size: 1em;
 }
-/* line 68, ../../sass/application.sass */
+/* line 69, ../../sass/application.sass */
 .input input[type=submit]:hover {
   color: red;
 }
 
-/* line 73, ../../sass/application.sass */
+/* line 74, ../../sass/application.sass */
 .output {
   float: right;
 }
-/* line 77, ../../sass/application.sass */
+/* line 78, ../../sass/application.sass */
 .output .outputTitle {
   margin: 2% 0 1.5% 2%;
 }
-/* line 80, ../../sass/application.sass */
+/* line 81, ../../sass/application.sass */
 .output .outputHistory {
   padding: 2%;
   height: 17em;
@@ -133,7 +134,7 @@ html, body {
   overflow: hidden;
 }
 
-/* line 88, ../../sass/application.sass */
+/* line 89, ../../sass/application.sass */
 .hal {
   float: left;
   width: 15%;
@@ -141,22 +142,22 @@ html, body {
   font-family: Courier, monospace;
   font-size: 1em;
 }
-/* line 95, ../../sass/application.sass */
+/* line 96, ../../sass/application.sass */
 .hal img {
   display: block;
   width: 100%;
 }
-/* line 98, ../../sass/application.sass */
+/* line 99, ../../sass/application.sass */
 .hal audio {
   height: 0;
 }
-/* line 100, ../../sass/application.sass */
+/* line 101, ../../sass/application.sass */
 .hal div {
   text-align: center;
   width: 100%;
   margin-top: 3%;
 }
-/* line 104, ../../sass/application.sass */
+/* line 105, ../../sass/application.sass */
 .hal .error {
   color: red;
 }
