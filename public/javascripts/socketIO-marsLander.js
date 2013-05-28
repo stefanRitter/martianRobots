@@ -11,13 +11,27 @@
 
 (function($) {
 
+  // helpers
+  function printOutput(message) {
+    $('.outputHistory').append('<div>' + message + '</div>');
+  }
+
+  function updateStatus(status) {
+    $('#status').text("status: " + status);
+  }
+
+
   // connect to server
-  var server = io.connect('http://localhost:5000');
+  var server = io.connect(); // auto connect
 
   server.on('connect', function(data) {
-    $('#status').text('status: connected');
     nickname = 'Mars Lander';
     server.emit('join', nickname);
+  });
+
+  server.on('welcome', function(data) {
+    updateStatus('connected');
+    printOutput(data.message);
   });
 
 
@@ -26,10 +40,22 @@
       .focus(function () { $(this).select(); } )
       .mouseup(function (e) {e.preventDefault(); });
 
+
+  // send commands to server
   $('form').on('submit', function(e) {
     e.preventDefault();
 
-    // TODO
+    var input = $("textarea").val();
+    $("textarea").val('');
+
+    server.emit('commands', input);
   });
+
+
+  // receive Mars lander status updates
+  server.on('output', function (data) {
+    printOutput(data.message);
+  });
+
 
 })(jQuery);

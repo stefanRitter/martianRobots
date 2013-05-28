@@ -18,3 +18,11 @@ module.exports = (app, server) ->
     client.on 'join', (nickname) ->
       client.set 'nickname', nickname
       console.log("CONNECTED: #{nickname}")
+
+      client.emit('welcome', { message: 'Mars Lander is idle...' });
+
+
+    client.on 'commands', (data) ->
+      console.log(data)
+
+      client.emit('output', { message: data });
