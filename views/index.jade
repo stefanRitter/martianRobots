@@ -20,9 +20,8 @@ html(lang="en")
     link(rel='author',href='https://plus.google.com/115904556340885582567?rel=author')
     link(href='../stylesheets/application.css',rel='stylesheet',type='text/css')
 
-  body
-    div#app
 
+    //- templates
     script#InputView(type='text/template')
       form
         textarea(name='description')
@@ -37,6 +36,10 @@ html(lang="en")
       audio
         source(src="../sounds/cantdo.ogg",type="audio/ogg")
         source(src="../sounds/cantdo.mp3",type="audio/mpeg")
+
+
+  body
+    div#app
 
     script(src='../javascripts/jquery-1.9.1.min.js')
     script(src='../javascripts/underscore-min.js')

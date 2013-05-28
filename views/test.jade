@@ -28,9 +28,8 @@ html(lang="en")
     //- tests
     script(type="text/javascript",src="../javascripts/tests/testSpec.js")
 
-  body
-    div#app
 
+    //- templates
     script#InputView(type='text/template')
       form
         textarea(name='description')
@@ -45,6 +44,9 @@ html(lang="en")
       audio
         source(src="../sounds/cantdo.ogg",type="audio/ogg")
         source(src="../sounds/cantdo.mp3",type="audio/mpeg")
+
+  body
+    div#app
 
     script(src='../javascripts/jquery-1.9.1.min.js')
     script(src='../javascripts/underscore-min.js')
